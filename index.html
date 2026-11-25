@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080d19">
+<title>Grooveprint — Voice to MIDI</title>
+<style>/* STYLE */</style>
+</head>
+<body>
+  <header class="masthead">
+    <div class="frame masthead-inner">
+      <div class="wordmark">
+        <span class="mark" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span>
+        Grooveprint
+      </div>
+      <div class="masthead-actions">
+        <span class="local"><i aria-hidden="true"></i> On-device audio</span>
+        <button id="appearance-open" class="appearance-open" type="button" aria-haspopup="dialog"><span class="appearance-icon" aria-hidden="true"></span> Appearance</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="frame">
+    <div class="intro">
+      <h1>Voice to MIDI<span>.</span></h1>
+      <p>Sing or hum a melody. Get a MIDI clip with your groove intact.</p>
+    </div>
+
+    <div class="controls">
+      <section class="capture-panel" aria-labelledby="capture-heading">
+        <div class="panel-heading">
+          <h2 id="capture-heading">Capture a take</h2>
+          <span id="capture-time" class="time">0:00.0</span>
+        </div>
+        <div id="meter" class="meter" aria-hidden="true"></div>
+        <div class="capture-actions">
+          <button id="record" class="button record"><span class="record-icon" aria-hidden="true"></span><span id="record-label">Record</span></button>
+          <button id="import" class="button quiet"><span class="import-icon" aria-hidden="true">↑</span> Import audio</button>
+          <input id="file" type="file" accept="audio/*,.wav,.mp3,.m4a,.aif,.aiff,.flac,.ogg,.webm,.aac" hidden>
+        </div>
+        <p id="status" class="status" role="status" aria-live="polite">Ready to record. Sing one note at a time.</p>
+      </section>
+
+      <section class="timing-panel" aria-labelledby="timing-heading">
+        <div class="panel-heading"><h2 id="timing-heading">Clip timing</h2></div>
+        <div class="setting">
+          <label for="tempo">Project tempo</label>
+          <div class="tempo"><input id="tempo" type="number" min="30" max="300" step="1" value="140" inputmode="numeric"><span>BPM</span></div>
+        </div>
+        <div class="setting">
+          <span>Note timing</span>
+          <span class="timing-value">As sung</span>
+        </div>
+        <label class="trim"><input id="trim" type="checkbox"> Trim silence before first note</label>
+      </section>
+    </div>
+
+    <section class="take" aria-labelledby="take-title">
+      <div class="take-header">
+        <div class="take-title">
+          <h2 id="take-title">Piano roll</h2>
+          <p id="take-meta" class="take-meta">Loading demo…</p>
+        </div>
+        <div class="take-actions">
+          <button id="demo" class="demo-button" type="button">Load demo</button>
+          <button id="export" class="button export" type="button" disabled><span class="down-icon" aria-hidden="true">↓</span> Download MIDI</button>
+        </div>
+      </div>
+      <div class="roll-container">
+        <canvas id="roll" role="img" aria-label="Piano roll and audio waveform"></canvas>
+        <div id="roll-empty" hidden>No pitched notes to display.</div>
+      </div>
+      <div class="transport">
+        <div class="transport-controls">
+          <button id="play" class="play" type="button" aria-label="Play preview" disabled><span aria-hidden="true"></span></button>
+          <span id="play-time" class="time">0:00.0 <span class="duration">/ 0:00.0</span></span>
+        </div>
+        <div class="preview" role="group" aria-label="Preview source">
+          <button class="preview-tab" data-source="voice" type="button" aria-pressed="false">Voice</button>
+          <button class="preview-tab" data-source="midi" type="button" aria-pressed="true">MIDI</button>
+        </div>
+      </div>
+    </section>
+    <footer class="footer">
+      <p>Set the BPM to match your Ableton project, then drag the <code>.mid</code> file onto a MIDI track.</p>
+      <span class="shortcut"><kbd>Space</kbd> Play / stop</span>
+    </footer>
+  </main>
+
+  <dialog id="appearance" aria-labelledby="appearance-title">
+    <div class="appearance-header">
+      <h2 id="appearance-title">Appearance</h2>
+      <button id="appearance-close" type="button" aria-label="Close appearance">×</button>
+    </div>
+    <div class="appearance-preview" aria-hidden="true">
+      <span class="appearance-preview-note"></span>
+    </div>
+    <div class="appearance-options">
+      <label>Skin<select id="appearance-skin"></select></label>
+      <label>Background<select id="appearance-background"></select></label>
+    </div>
+    <button id="appearance-reset" class="appearance-reset" type="button">Reset appearance</button>
+  </dialog>
+
+  <script type="text/plain" id="transcriber">/* WORKER */</script>
+  <script>/* APP */</script>
+</body>
+</html>

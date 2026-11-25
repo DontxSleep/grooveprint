@@ -1,0 +1,36 @@
+{
+  "name": "grooveprint",
+  "version": "1.1.0",
+  "description": "Turn a sung melody into MIDI and keep your groove.",
+  "author": "DontxSleep",
+  "private": true,
+  "main": "main.cjs",
+  "scripts": {
+    "build:windows": "node ../build.mjs ./Grooveprint.html && electron-builder --win nsis --x64 --publish never",
+    "start": "node ../build.mjs ./Grooveprint.html && electron ."
+  },
+  "devDependencies": {
+    "electron": "45.5.0",
+    "electron-builder": "26.18.0"
+  },
+  "build": {
+    "appId": "com.grooveprint.desktop",
+    "productName": "Grooveprint",
+    "files": ["main.cjs", "Grooveprint.html"],
+    "directories": {"output": "dist"},
+    "win": {
+      "target": "nsis",
+      "icon": "Grooveprint.ico",
+      "signAndEditExecutable": false,
+      "artifactName": "Grooveprint-Windows-x64-Setup.exe"
+    },
+    "nsis": {
+      "oneClick": false,
+      "perMachine": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": false,
+      "installerIcon": "Grooveprint.ico",
+      "uninstallerIcon": "Grooveprint.ico"
+    }
+  }
+}
