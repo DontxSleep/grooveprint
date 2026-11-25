@@ -1,0 +1,36 @@
+name: Upload Windows release asset
+
+on:
+  workflow_dispatch:
+    inputs:
+      windows_run_id:
+        description: Successful Windows installer workflow run
+        required: true
+        type: string
+      release_tag:
+        description: Existing GitHub release tag
+        required: true
+        type: string
+
+permissions:
+  actions: read
+  contents: write
+
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: Grooveprint-Windows-x64
+          run-id: ${{ inputs.windows_run_id }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload the tested installer and checksums
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          RELEASE_TAG: ${{ inputs.release_tag }}
+        run: |
+          gh release download "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" --pattern Grooveprint.dmg
+          sha256sum Grooveprint.dmg Grooveprint-Windows-x64-Setup.exe > SHA256SUMS.txt
+          gh release upload "$RELEASE_TAG" --repo "$GITHUB_REPOSITORY" Grooveprint-Windows-x64-Setup.exe SHA256SUMS.txt
